@@ -62,9 +62,8 @@ void ptbr_intro_update(void) {
         clock_running=0;intro_seconds=0;current_cue=-1;last_clock=now;return;
     }
     if(!clock_running) {clock_running=1;intro_seconds=0;last_clock=now;}
-    /* N64 OS clock: 46,875,000 ticks/s. Unsigned subtraction handles wrap.
-     * Cue times calibrated to the user recording; elapsed-time clock is
-     * independent of render FPS. Playback validation remains necessary. */
+    /* N64 OS clock: 46,875,000 ticks/s, independent of render FPS.
+     * Unsigned subtraction handles wrap. */
     f32 delta=(f32)(u32)(now-last_clock)/46875000.0f;
     last_clock=now;
     if(is_cutscene_active!=6 && delta<2.0f) intro_seconds+=delta;
@@ -100,8 +99,7 @@ static Gfx *draw_line(Gfx *dl, const u8 *text, int line, int lines) {
     gDPSetAlphaCompare(dl++,G_AC_NONE);
     gDPSetCombineMode(dl++,G_CC_MODULATEIA_PRIM,G_CC_MODULATEIA_PRIM);
     gDPSetRenderMode(dl++,G_RM_XLU_SURF,G_RM_XLU_SURF2);
-    /* K. Rool follows the green original captions. Klump uses the warm
-     * orange requested by the user, inspired by his body colour. */
+    /* Speaker colors: orange for Klump, green for K. Rool. */
     if(cues[current_cue].speaker==SPEAKER_KLUMP) {
         gDPSetPrimColor(dl++,0,0,255,176,64,255);
     } else {

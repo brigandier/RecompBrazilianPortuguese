@@ -1,9 +1,8 @@
 #include "extra_texts.h"
 /* Fixed UI messages omitted from the text banks.
- * Addresses are symbol-relative for overlay relocation. The existing per-frame event is used instead of vanilla function hooks.
- * Overlay code signatures and pointer bounds are checked before dispatch. Original bytes AND zero padding must
- * match before writing; unexpected versions or other mods are left alone.
- * No persistent "already patched" flag: overlays may be reloaded at any time.
+ * Symbol-relative addresses follow overlay relocation. Check the loaded
+ * overlay, original text and zero padding before replacing each slot.
+ * Repeat on each frame because overlays can be reloaded.
  */
 #ifndef PTBR_HOST_TEST
 #include "modding.h"
@@ -76,9 +75,8 @@ static void ptbr_jetpac_strings(void) {
     PTBR_SLOT(jetpac_RODATA_START + 0x104, "GAME OVER PLAYER %d", PTBR_JETPAC_GAME_OVER, 20);
 }
 
-/* Only inspect loaded N64 RDRAM. The signature identifies the overlay even
- * when multiple overlays share the same address; a stale relocation is not
- * sufficient permission to modify memory. No writes are made to code.
+/* Check RDRAM bounds and the code signature: overlays can share addresses.
+ * Code bytes are only read; replacements affect text slots.
  */
 static int ptbr_overlay_matches(const unsigned char *rodata, unsigned int offset,
                                 const unsigned char *signature) {
