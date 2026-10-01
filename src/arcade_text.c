@@ -9,6 +9,17 @@ extern u8 arcade_text_red, arcade_text_green, arcade_text_blue, arcade_text_alph
 extern s32 arcade_text_x, arcade_text_y;
 extern Gfx *func_global_asm_806FD490(Gfx*, s32, s16, s16, char*);
 
+#define PTBR_ARCADE_COLUMNS PTBR_ARCADE_PLAYER "    " PTBR_ARCADE_COIN
+
+static unsigned char *ptbr_arcade_message(unsigned char *text) {
+    if (ptbr_text_equal(text,"CREDIT 00")) return (unsigned char*)PTBR_ARCADE_CREDITS;
+    if (ptbr_text_equal(text,"EXIT DK ARCADE")) return (unsigned char*)PTBR_ARCADE_EXIT;
+    if (ptbr_text_equal(text,"HOW HIGH CAN YOU GET ?")) return (unsigned char*)PTBR_ARCADE_HEIGHT;
+    if (ptbr_text_equal(text,"INSERT COIN")) return (unsigned char*)PTBR_ARCADE_INSERT;
+    if (ptbr_text_equal(text,"PLAYER    COIN")) return (unsigned char*)PTBR_ARCADE_COLUMNS;
+    return text;
+}
+
 RECOMP_PATCH void arcade_draw_text(Gfx **gpp, char *string) {
     Gfx *gp = *gpp;
     unsigned char *translated = ptbr_arcade_message((unsigned char*)string);

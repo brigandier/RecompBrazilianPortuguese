@@ -80,18 +80,15 @@ static void ptbr_jetpac_strings(void) {
  * when multiple overlays share the same address; a stale relocation is not
  * sufficient permission to modify memory. No writes are made to code.
  */
-static int ptbr_signature_matches(const unsigned char *data,
-                                  const unsigned char *signature,
-                                  unsigned int size) {
-    unsigned int i;
-    for (i = 0; i < size; ++i) if (data[i] != signature[i]) return 0;
-    return 1;
-}
 static int ptbr_overlay_matches(const unsigned char *rodata, unsigned int offset,
                                 const unsigned char *signature) {
     __UINTPTR_TYPE__ address = (__UINTPTR_TYPE__)rodata;
+    const unsigned char *data;
+    unsigned int i;
     if (address < 0x80000000UL + offset || address >= 0x80800000UL) return 0;
-    return ptbr_signature_matches(rodata - offset + 0x100, signature, 32);
+    data = rodata - offset + 0x100;
+    for (i = 0; i < 32; ++i) if (data[i] != signature[i]) return 0;
+    return 1;
 }
 static const unsigned char ptbr_signature_global_asm[32] = {0x25,0x4A,0x8E,0x20,0x25,0x6B,0x40,0x00,0x25,0x8C,0xDF,0x10,0x25,0xCE,0xDF,0x10,0x25,0xAD,0xDE,0xF0,0x27,0x18,0x01,0x70,0x25,0xEF,0x40,0x00,0x25,0x08,0x01,0x70};
 static const unsigned char ptbr_signature_critter[32] = {0x24,0x05,0x00,0x7B,0x24,0x03,0x00,0x80,0x24,0x05,0x00,0x81,0x90,0x8F,0x00,0x02,0x00,0x00,0x30,0x25,0x3C,0x01,0x40,0xA0,0x19,0xE0,0x00,0x0C,0x00,0x00,0x00,0x00};

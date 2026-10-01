@@ -26,7 +26,6 @@ extern u8 D_global_asm_807501E0, is_cutscene_active;
 extern s32 current_map;
 extern s16 D_global_asm_80744490, D_global_asm_80744494;
 extern u8 isIntroStoryPlaying(void);
-extern Gfx D_1000118[];
 extern s16 D_global_asm_807444B0, D_global_asm_807444AC;
 extern CharStruct font_6_characters[];
 extern u8 fontstring_6[], fontstarts_6[];
@@ -55,7 +54,8 @@ static int visible(void) {
     return intro_map() && isIntroStoryPlaying() && is_cutscene_active != 0 && is_cutscene_active != 6;
 }
 
-static void update_cue_clock(void) {
+RECOMP_CALLBACK("*", dk64recomp_every_frame)
+void ptbr_intro_update(void) {
     u32 now=(u32)osGetTime();
     int i, next=-1;
     if(!intro_map() || !isIntroStoryPlaying()) {
@@ -73,11 +73,6 @@ static void update_cue_clock(void) {
     current_cue=next;
 }
 
-RECOMP_CALLBACK("*", dk64recomp_every_frame)
-void ptbr_intro_update(void) {
-    update_cue_clock();
-}
-
 /* Draw the unchanged IA8 font through the game's F3DEX2 command format.
  * Texture filtering preserves fractional alpha and subpixel glyph positions.
  */
@@ -87,7 +82,7 @@ static Gfx *draw_line(Gfx *dl, const u8 *text, int line, int lines) {
     int top=D_global_asm_807444AC;
     int name_line=(line<0);
     int i,n,page,loaded=-1,total=0,pen=0;
-    if(!visible() || width<160 || height<120 || bottom<0 || bottom>height-(lines*14+6)) return dl;
+    if(width<160 || height<120 || bottom<0 || bottom>height-(lines*14+6)) return dl;
     for(i=0;text[i];++i) {n=glyph_index(text[i]);total+=n<0?6:font_6_characters[n].width+1;}
     /* Quarter-pixel geometry: three units per original pixel = 75% size. */
     int x=24*4;

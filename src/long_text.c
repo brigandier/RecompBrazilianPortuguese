@@ -29,7 +29,11 @@ s16 func_global_asm_806FDB8C(s16 arg0, u8 *arg1, u8 arg2, f32 arg3, f32 arg4, f3
     s16 i;
     u32 len;
 
-    arg1 = ptbr_long_message(arg1);
+    if (ptbr_text_equal(arg1, "WELL DONE!")) {
+        arg1 = (u8*)PTBR_WELL_DONE;
+    } else if (ptbr_text_equal(arg1, "LAP BONUS")) {
+        arg1 = (u8*)PTBR_LAP_BONUS;
+    }
     getCenterOfString(arg0, arg1);
     temp_v0 = _malloc(sizeof(Struct80754AD0));
     func_global_asm_80611690(temp_v0);
