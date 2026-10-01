@@ -1,0 +1,17 @@
+[manifest]
+id = "translation_ptbr"
+version = "1.0.0"
+display_name = "Brazilian Portuguese Translation"
+description = "Brazilian Portuguese Translation of DK64.\n\n- Includes custom font support for the language.\n- Includes opening cutscene subtitles."
+short_description = "Brazilian Portuguese Translation of DK64"
+authors = [ "brigandier" ]
+game_id = "dk64"
+minimum_recomp_version = "1.0.2"
+
+[inputs]
+elf_path = "build/mod.elf"
+mod_filename = "translation_ptbr"
+func_reference_syms_file = "Dk64Syms/dump.toml"
+data_reference_syms_files = [ "Dk64Syms/data_dump.toml" ]
+additional_files = ["thumb.dds"]
+
