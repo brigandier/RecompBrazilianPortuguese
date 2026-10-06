@@ -1,6 +1,6 @@
 [manifest]
 id = "translation_ptbr"
-version = "1.0.0"
+version = "1.0.1"
 display_name = "Brazilian Portuguese Translation"
 description = "Brazilian Portuguese Translation of DK64.\n\n- Includes custom font support for the language.\n- Includes opening cutscene subtitles."
 short_description = "Brazilian Portuguese Translation of DK64"
