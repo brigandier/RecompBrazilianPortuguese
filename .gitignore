@@ -115,3 +115,6 @@ text_files/english/
 .local-build/
 *.n64
 *.v64
+
+# Local installer project
+/installer/

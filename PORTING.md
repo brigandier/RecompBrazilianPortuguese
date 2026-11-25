@@ -108,12 +108,6 @@ RecompModTool mod.toml path/to/output
 
 Running `make` alone does not regenerate TXT edits. Run the converter first. The supplementary converter uses Python 3.9 or newer and only standard-library modules. It can be run from any working directory; the original bank converter still expects `text_converter/` as its working directory.
 
-Converter checks can be run with:
-
-```sh
-python text_converter/test_extra_converter.py
-```
-
 After editing, commit the TXT files and regenerated headers together. Test the resulting `translation_ptbr.nrm` in the game before publishing. The TXT files are build inputs, not external files loaded dynamically by an installed NRM.
 
 ## Build dependencies and packaging
